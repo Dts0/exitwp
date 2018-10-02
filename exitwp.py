@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding=utf-8
 
 import codecs
 import os
@@ -289,14 +290,14 @@ def write_jekyll(data, target_format):
         sys.stdout.flush()
         out = None
         yaml_header = {
-            'title': i['title'],
-            'link': i['link'],
-            'author': i['author'],
-            'date': datetime.strptime(
+            '原标题': i['title'],
+            '原链接': '<a href=\''+i['link']+'\'>'+i['link']+'</a>',
+#            'author': i['author'],
+            '原发布日期': datetime.strptime(
                 i['date'], '%Y-%m-%d %H:%M:%S').replace(tzinfo=UTC()),
-            'slug': i['slug'],
-            'wordpress_id': int(i['wp_id']),
-            'comments': i['comments'],
+#            'slug': i['slug'],
+#            'wordpress_id': int(i['wp_id']),
+#            'comments': i['comments'],
         }
         if len(i['excerpt']) > 0:
             yaml_header['excerpt'] = i['excerpt']
@@ -307,7 +308,7 @@ def write_jekyll(data, target_format):
             i['uid'] = get_item_uid(i, date_prefix=True)
             fn = get_item_path(i, dir='_posts')
             out = open_file(fn)
-            yaml_header['layout'] = 'post'
+#            yaml_header['layout'] = 'post'
         elif i['type'] == 'page':
             i['uid'] = get_item_uid(i)
             # Chase down parent path, if any
@@ -322,7 +323,7 @@ def write_jekyll(data, target_format):
                     break
             fn = get_item_path(i, parentpath)
             out = open_file(fn)
-            yaml_header['layout'] = 'page'
+#            yaml_header['layout'] = 'page'
         elif i['type'] in item_type_filter:
             pass
         else:
@@ -356,8 +357,8 @@ def write_jekyll(data, target_format):
             out.write('---\n')
             if len(yaml_header) > 0:
                 out.write(toyaml(yaml_header))
-            if len(tax_out) > 0:
-                out.write(toyaml(tax_out))
+#           if len(tax_out) > 0:
+#                out.write(toyaml(tax_out))
 
             out.write('---\n\n')
             try:
